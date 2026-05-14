@@ -3,15 +3,49 @@ body {
     margin: 0;
 }
 
-div .inner-rectangle-1 {
-    width: 30vh;
-    height: 100vh;
-    background-color: aquamarine;
-    grid-row: 1;
+.container {
+    display: flex;
+    align-items: stretch;
 }
 
-div .inner-rectangle-1 {
-    width: 100%;
-    height: 20vh;
+.side {
+    background-color: blue;
+}
+
+.second-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.top {
     background-color: aqua;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    background-color: gray;
+    padding: 30px;
+}
+
+.main div {
+    padding: 20px;
+    margin: 0;
+}
+
+.rectangle1 {
+    background-color: pink;
+}
+
+.rectangle2 {
+    background-color: pink;
+}
+
+.rectangle3 {
+    background-color: pink;
+}
+
+.rectangle4 {
+    background-color: pink;
 }
