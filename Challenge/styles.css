@@ -5,28 +5,33 @@ body {
 
 .container {
     display: flex;
-    align-items: stretch;
+    height: 100vh;
+    width: 100vw;
 }
 
 .side {
-    background-color: blue;
+    background-color: #02FFC5;
+    flex-grow: 1;
 }
 
 .second-container {
     display: flex;
     flex-direction: column;
+    flex-grow: 2;
 }
 
 .top {
-    background-color: aqua;
+    background-color: #02FFFF;
+    flex-grow: 1;
 }
 
 .main {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
-    background-color: gray;
-    padding: 30px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 60px;
+    background-color: #CCCCCC;
+    padding: 30px 30px 200px 30px;
+    flex-grow: 3;
 }
 
 .main div {
@@ -34,18 +39,7 @@ body {
     margin: 0;
 }
 
-.rectangle1 {
-    background-color: pink;
-}
-
-.rectangle2 {
-    background-color: pink;
-}
-
-.rectangle3 {
-    background-color: pink;
-}
-
-.rectangle4 {
-    background-color: pink;
+.rectangle {
+    background-color: #ED028C;
+    border: 2px solid #02FFC5;
 }

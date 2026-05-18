@@ -1,0 +1,22 @@
+.item {
+    background: #3498db;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.grid-simple {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.grid-fr {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+.grid-gap {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
