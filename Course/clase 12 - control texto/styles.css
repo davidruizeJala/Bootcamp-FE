@@ -1,0 +1,36 @@
+.left {
+    text-align: left;
+}
+
+.justify {
+    text-align: justify;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.lowercase {
+    text-transform: lowercase;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.line-through {
+    text-decoration: line-through;
+}
+
+.no-underline {
+    text-decoration: none;
+    color: red;
+}
+
+.indent {
+    text-indent: 2rem;
+}

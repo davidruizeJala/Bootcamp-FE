@@ -1,0 +1,43 @@
+.card {
+    border: 2px solid #333;
+    padding: 20px;
+    margin-bottom: 20px;
+    max-width: 300px;
+}
+
+.card__title {
+    color: #333;
+    margin-bottom: 50px;
+}
+
+.card__price {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.card__button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.card__badge {
+    background-color: red;
+    color: white;
+    padding: 3px 8px;
+    font-size: 12px;
+}
+
+.card--featured {
+    border-color: gold;
+    border-width: 3px;
+}
+
+.card__button--disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

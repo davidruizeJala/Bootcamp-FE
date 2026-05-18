@@ -1,0 +1,29 @@
+/* Esto se va a aplicar el estilo a todos las etiquetas de parrafo en la hoja */
+p {
+    margin-bottom: 30px;
+}
+
+
+/* Esto se va a aplicar el estilo a todas las etiquetas que tengan esta clase, una etiqueta puede tener 1 o más clases*/
+.rojo {
+    color: red;
+}
+
+/* Esto se va a aplicar el estilo a la etiqueta que tenga este mismo id*/
+#unico {
+    background-color: yellow;
+}
+
+.contenedor {
+    border: 2px solid blue;
+    border-radius: 5px;
+}
+
+.contenedor p {
+    color: blue;
+}
+
+button:hover {
+    background-color: blue;
+    cursor: pointer;
+}

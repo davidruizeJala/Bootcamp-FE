@@ -1,0 +1,648 @@
+/* ===========================================
+   1. RESET BÁSICO
+   =========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333333;
+    background-color: #ffffff;
+}
+
+/* ===========================================
+     2. TIPOGRAFÍA GENERAL
+     =========================================== */
+h1,
+h2,
+h3,
+h4 {
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    color: #1a1a1a;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+h2 {
+    font-size: 28px;
+    margin-top: 48px;
+}
+
+h3 {
+    font-size: 24px;
+    margin-top: 32px;
+}
+
+h4 {
+    font-size: 18px;
+    margin-top: 24px;
+}
+
+p {
+    margin-bottom: 16px;
+}
+
+strong {
+    font-weight: bold;
+    color: #000000;
+}
+
+/* ===========================================
+     3. ENLACES
+     =========================================== */
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #1e40af;
+}
+
+/* ===========================================
+     4. LISTAS
+     =========================================== */
+ul {
+    list-style: none;
+}
+
+/* ===========================================
+     5. HEADER
+     =========================================== */
+.header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 24px 0;
+}
+
+.header__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header__brand {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.header__name {
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.header__tagline {
+    color: #666666;
+    font-size: 14px;
+}
+
+/* ===========================================
+     6. NAVEGACIÓN
+     =========================================== */
+.nav {
+    text-align: center;
+}
+
+.nav__list {
+    display: inline-block;
+}
+
+.nav__item {
+    display: inline-block;
+    margin: 0 16px;
+}
+
+.nav__link {
+    padding: 8px 12px;
+    display: inline-block;
+    color: #333333;
+    font-weight: 500;
+}
+
+.nav__link:hover {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.nav__link--active {
+    color: #2563eb;
+    font-weight: bold;
+}
+
+/* ===========================================
+     7. MAIN CONTENT
+     =========================================== */
+.main {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+/* ===========================================
+     8. HERO SECTION
+     =========================================== */
+.hero {
+    padding: 64px 0;
+    text-align: center;
+    background-color: #f0f4f8;
+    margin-bottom: 48px;
+}
+
+.hero__container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.hero__title {
+    font-size: 48px;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+}
+
+.hero__subtitle {
+    font-size: 24px;
+    color: #2563eb;
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+
+.hero__description {
+    font-size: 18px;
+    color: #666666;
+    margin-bottom: 32px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero__actions {
+    margin-bottom: 48px;
+}
+
+.hero__stats {
+    text-align: center;
+}
+
+.stat {
+    display: inline-block;
+    margin: 0 32px;
+    text-align: center;
+}
+
+.stat__number {
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    color: #2563eb;
+    margin-bottom: 8px;
+}
+
+.stat__label {
+    font-size: 14px;
+    color: #666666;
+}
+
+/* ===========================================
+     9. BOTONES
+     =========================================== */
+.button {
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    border: 2px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.button--primary {
+    background-color: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+}
+
+.button--primary:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+    text-decoration: none;
+}
+
+.button--secondary {
+    background-color: #ffffff;
+    color: #2563eb;
+    border-color: #2563eb;
+}
+
+.button--secondary:hover {
+    background-color: #f0f4ff;
+    text-decoration: none;
+}
+
+.button--large {
+    padding: 16px 32px;
+    font-size: 18px;
+}
+
+/* ===========================================
+     10. ABOUT SECTION
+     =========================================== */
+.about {
+    padding: 48px 0;
+}
+
+.about__container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about__title {
+    text-align: center;
+    color: #1a1a1a;
+    margin-bottom: 32px;
+}
+
+.about__intro {
+    font-size: 20px;
+    text-align: center;
+    color: #333333;
+    margin-bottom: 24px;
+}
+
+.about__text {
+    color: #666666;
+    margin-bottom: 32px;
+}
+
+/* ===========================================
+     11. QUOTE
+     =========================================== */
+.quote {
+    background-color: #f8f9fa;
+    padding: 24px;
+    margin: 32px 0;
+    border-left: 4px solid #2563eb;
+}
+
+.quote__text {
+    font-size: 18px;
+    font-style: italic;
+    color: #333333;
+    margin-bottom: 16px;
+}
+
+.quote__author {
+    color: #666666;
+    font-size: 14px;
+    display: block;
+    text-align: right;
+}
+
+/* ===========================================
+     12. VALUES
+     =========================================== */
+.values {
+    margin-top: 48px;
+}
+
+.values__title {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.values__list {
+    padding: 0;
+}
+
+.values__item {
+    padding: 16px;
+    margin-bottom: 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+}
+
+.values__item:hover {
+    background-color: #f0f4f8;
+    border-color: #2563eb;
+}
+
+.values__icon {
+    font-size: 24px;
+    margin-right: 12px;
+}
+
+.values__item strong {
+    margin-right: 8px;
+}
+
+.values__item span {
+    color: #666666;
+}
+
+/* ===========================================
+     13. PROJECTS SECTION
+     =========================================== */
+.projects {
+    padding: 64px 0;
+    background-color: #f8f9fa;
+}
+
+.projects__container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.projects__title {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.projects__description {
+    text-align: center;
+    color: #666666;
+    margin-bottom: 48px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.projects__grid {
+    padding: 0 20px;
+}
+
+/* ===========================================
+     14. PROJECT CARD
+     =========================================== */
+.project {
+    background-color: #ffffff;
+    padding: 32px;
+    margin-bottom: 32px;
+    border: 1px solid #e0e0e0;
+}
+
+.project:hover {
+    border-color: #2563eb;
+}
+
+.project--featured {
+    border: 2px solid #2563eb;
+    position: relative;
+}
+
+.project__badge {
+    background-color: #2563eb;
+    color: #ffffff;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 16px;
+}
+
+.project__title {
+    color: #1a1a1a;
+    margin-bottom: 16px;
+}
+
+.project__description {
+    color: #666666;
+    margin-bottom: 24px;
+}
+
+.project__subtitle {
+    font-size: 16px;
+    color: #333333;
+    margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+.project__learnings {
+    list-style: disc;
+    padding-left: 24px;
+    margin-bottom: 24px;
+}
+
+.project__learnings li {
+    color: #666666;
+    margin-bottom: 8px;
+}
+
+.project__technologies {
+    margin-bottom: 24px;
+}
+
+.tag {
+    display: inline-block;
+    background-color: #e0f2fe;
+    color: #0369a1;
+    padding: 4px 12px;
+    margin-right: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.project__links {
+    text-align: left;
+}
+
+.project__link {
+    display: inline-block;
+    margin-right: 16px;
+    font-weight: 600;
+}
+
+/* ===========================================
+     15. SKILLS SECTION
+     =========================================== */
+.skills {
+    padding: 64px 0;
+}
+
+.skills__container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.skills__title {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.skills__subtitle {
+    text-align: center;
+    color: #666666;
+    margin-bottom: 32px;
+}
+
+.skills__list {
+    margin-bottom: 48px;
+}
+
+.skill {
+    margin-bottom: 32px;
+}
+
+.skill__name {
+    margin-bottom: 8px;
+    color: #1a1a1a;
+}
+
+.skill__bar {
+    background-color: #e0e0e0;
+    height: 24px;
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.skill__progress {
+    background-color: #2563eb;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.skill__progress--html {
+    width: 75%;
+}
+
+.skill__progress--css {
+    width: 60%;
+}
+
+.skill__progress--js {
+    width: 20%;
+}
+
+.skill__percentage {
+    color: #666666;
+    font-size: 14px;
+}
+
+/* ===========================================
+     16. LEARNING
+     =========================================== */
+.learning {
+    background-color: #f8f9fa;
+    padding: 24px;
+}
+
+.learning__title {
+    margin-bottom: 16px;
+    color: #1a1a1a;
+}
+
+.learning__list {
+    list-style: disc;
+    padding-left: 24px;
+}
+
+.learning__item {
+    color: #666666;
+    margin-bottom: 8px;
+}
+
+/* ===========================================
+     17. CONTACT SECTION
+     =========================================== */
+.contact {
+    padding: 64px 0;
+    background-color: #f0f4f8;
+}
+
+.contact__container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.contact__title {
+    margin-bottom: 16px;
+}
+
+.contact__description {
+    color: #666666;
+    margin-bottom: 48px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact__methods {
+    margin-bottom: 48px;
+}
+
+.contact__method {
+    display: inline-block;
+    margin: 0 32px 32px;
+    text-align: center;
+}
+
+.contact__method-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+}
+
+.contact__link {
+    color: #2563eb;
+    font-weight: 600;
+}
+
+/* ===========================================
+     18. FOOTER
+     =========================================== */
+.footer {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 48px 0;
+    text-align: center;
+}
+
+.footer__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer__nav {
+    margin-bottom: 24px;
+}
+
+.footer__link {
+    color: #ffffff;
+    margin: 0 16px;
+    display: inline-block;
+}
+
+.footer__link:hover {
+    color: #93c5fd;
+    text-decoration: none;
+}
+
+.footer__copyright {
+    color: #9ca3af;
+    margin-bottom: 8px;
+}
+
+.footer__credits {
+    color: #9ca3af;
+    font-size: 14px;
+}

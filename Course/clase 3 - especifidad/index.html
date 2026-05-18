@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clase 2: Selectores, Especificidad y Herencia CSS</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <!-- SECCIÓN 1: TIPOS DE SELECTORES -->
+    <section class="selectors-section">
+      <h1>1. Tipos de Selectores CSS</h1>
+
+      <!-- Ejemplo: Selector de Elemento -->
+      <h2>Selector de Elemento</h2>
+      <p>Este párrafo es seleccionado con 'p'</p>
+      <div>Este div es seleccionado con 'div'</div>
+
+      <!-- Ejemplo: Selector de Clase -->
+      <h2 class="secondary-title">Selector de Clase</h2>
+      <p class="highlighted-text">Párrafo con clase .highlighted-text</p>
+      <p class="highlighted-text">Otro párrafo con la misma clase</p>
+
+      <!-- Ejemplo: Selector de ID -->
+      <h2 id="unique-title">Selector de ID</h2>
+      <p>Este párrafo tiene un ID único</p>
+
+      <!-- Ejemplo: Múltiples clases -->
+      <div class="box">Caja normal</div>
+      <div class="box featured">Caja con dos clases</div>
+      <div class="box featured offer">Caja con tres clases</div>
+    </section>
+
+    <!-- SECCIÓN 2: ESPECIFICIDAD -->
+    <section class="specificity-section">
+      <h1>2. Especificidad CSS</h1>
+
+      <!-- Ejemplo de conflicto de especificidad -->
+      <div id="main-container" class="container">
+        <p class="text">Párrafo dentro de contenedor</p>
+        <p class="text important">Párrafo con dos clases</p>
+        <p id="text-id" class="text">Párrafo con ID y clase</p>
+      </div>
+
+      <!-- Demostración de cascada -->
+      <article class="article">
+        <h3 class="title">Título del artículo</h3>
+        <p class="description">Descripción del artículo</p>
+        <button class="button">Botón simple</button>
+        <button class="button primary">Botón primario</button>
+      </article>
+    </section>
+
+    <!-- SECCIÓN 3: HERENCIA -->
+    <section class="inheritance-section">
+      <h1>3. Herencia en CSS</h1>
+
+      <!-- Ejemplo: Propiedades que se heredan -->
+      <div class="parent-inherits">
+        <h3>Este h3 hereda el color y font-family del padre</h3>
+        <p>Este párrafo también hereda las propiedades de texto</p>
+        <ul>
+          <li>Los items de lista heredan color</li>
+          <li>Pero no heredan margin o padding</li>
+        </ul>
+      </div>
+
+      <!-- Ejemplo: Propiedades que NO se heredan -->
+      <div class="parent-no-inherit">
+        <p>El padding y border del padre no se heredan</p>
+        <div>Este div hijo no tiene el border del padre</div>
+      </div>
+
+      <!-- Ejemplo: Control de herencia -->
+      <div class="inheritance-control">
+        <p class="child-inherit">Uso de inherit</p>
+        <p class="child-initial">Uso de initial</p>
+        <p class="child-unset">Uso de unset</p>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: SELECTORES COMBINADOS -->
+    <section class="combined-section">
+      <h1>4. Selectores Combinados</h1>
+
+      <!-- Selector descendiente -->
+      <div class="container">
+        <p>Párrafo hijo directo</p>
+        <div>
+          <p>Párrafo nieto (descendiente)</p>
+        </div>
+      </div>
+
+      <!-- Selector de atributo -->
+      <form>
+        <input type="text" placeholder="Campo de texto" />
+        <input type="email" placeholder="Campo de email" />
+        <input type="password" placeholder="Campo de contraseña" />
+        <button type="submit">Enviar</button>
+      </form>
+
+      <!-- Pseudo-clases básicas -->
+      <nav>
+        <a href="#" class="link">Enlace normal</a>
+        <a href="#" class="link active">Enlace activo</a>
+        <a href="#" class="link">Otro enlace</a>
+      </nav>
+    </section>
+
+    <!-- SECCIÓN 5: EJERCICIO PRÁCTICO -->
+    <section class="final-exercise">
+      <h1>5. Ejercicio Práctico</h1>
+
+      <!-- Demostración completa de especificidad -->
+      <div id="demo" class="demo-container">
+        <p>Texto base</p>
+        <p class="special">Texto con clase</p>
+        <p id="unique" class="special">Texto con ID y clase</p>
+        <p class="special important">Texto con dos clases</p>
+        <p style="color: orange">Texto con estilo inline</p>
+      </div>
+    </section>
+  </body>
+</html>

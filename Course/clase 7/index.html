@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Práctica: BEM</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <h1>BEM: Block__Element--Modifier</h1>
+
+    <!-- EJEMPLO: TARJETA DE PRODUCTO -->
+    <div class="card">
+      <h2 class="card__title">Laptop Pro</h2>
+      <p class="card__price">$999</p>
+      <button class="card__button">Comprar</button>
+      <button class="card__button card__button--disabled">Sin Stock</button>
+    </div>
+
+    <!-- SEGUNDA TARJETA CON MODIFICADOR -->
+    <div class="card card--featured">
+      <h2 class="card__title">Laptop Ultra</h2>
+      <span class="card__badge">OFERTA</span>
+      <p class="card__price">$1299</p>
+      <button class="card__button">Comprar</button>
+    </div>
+
+    <!-- EJEMPLO DE ANIDACIÓN INCORRECTA -->
+    <p>❌ MAL: card__header__title</p>
+    <p>✅ BIEN: card__title</p>
+  </body>
+</html>

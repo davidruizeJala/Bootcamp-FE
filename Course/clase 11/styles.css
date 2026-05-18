@@ -1,0 +1,25 @@
+.normal {
+    font-size: 1rem;
+}
+
+.light {
+    font-weight: 400;
+}
+
+.compact {
+    line-height: 1;
+}
+
+.italic {
+    font-style: italic;
+}
+
+/*Podemos usar de 700 a 900 bold o bolder*/
+.bold {
+    font-weight: 700;
+}
+
+.spaced {
+    letter-spacing: 1.2px;
+    /* agrega 2 píxeles de espacio extra entre letras */
+}
