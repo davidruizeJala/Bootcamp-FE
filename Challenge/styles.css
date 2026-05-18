@@ -7,6 +7,7 @@ body {
     display: flex;
     height: 100vh;
     width: 100vw;
+    flex-direction: column;
 }
 
 .side {
@@ -16,8 +17,26 @@ body {
 
 .second-container {
     display: flex;
+    flex-direction: row;
+    flex-grow: 2;
+}
+
+.third-container {
+    display: flex;
     flex-direction: column;
     flex-grow: 2;
+}
+
+.rectangle-large-1 {
+    flex-grow: 1;
+    border: 2px solid #02FFC5;
+    background: #A4C2F4;
+}
+
+.rectangle-large-2 {
+    flex-grow: 1;
+    border: 2px solid #02FFC5;
+    background: #674EA7;
 }
 
 .top {
@@ -26,11 +45,12 @@ body {
 }
 
 .main {
+    border: 2px solid #02FFC5;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 40px 60px;
     background-color: #CCCCCC;
-    padding: 30px 30px 200px 30px;
+    padding: 30px;
     flex-grow: 3;
 }
 
