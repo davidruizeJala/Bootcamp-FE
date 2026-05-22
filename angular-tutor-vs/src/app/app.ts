@@ -9,4 +9,11 @@ import { RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('My Recipe box');
+
+  protected sayHiButton1(): void {
+    console.log('Boton 1 clickeado');
+  }
+  protected sayHiButton2(): void {
+    console.log('Boton 1 clickeado');
+  }
 }
