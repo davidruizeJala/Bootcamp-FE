@@ -1,6 +1,8 @@
 <main>
   <h1>{{ title() }}</h1>
+  <button (click)="showRecipe1()">Show recipe 1</button>
+  <button (click)="showRecipe2()">Show recipe 2</button>
 
-  <button (click)="sayHiButton1()">Say hi 1</button>
-  <button (click)="sayHiButton2()">Say hi 2</button>
+  <h2>{{ recipe().name }}</h2>
+  <p>{{ recipe().description }}</p>
 </main>
