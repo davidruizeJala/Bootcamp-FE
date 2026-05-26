@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="layout" [class.sidebar-collapsed]="!isOpen()">
+      <div class="top"></div>
+      <div class="side">
+        <button (click)="toggleMenu()" class="button">menu</button>
+      </div>
+      <div class="third-container">
+        <div class="rectangle-large-1"></div>
+        <div class="rectangle-large-2"></div>
+        <div class="main">
+          <div class="rectangle"></div>
+          <div class="rectangle"></div>
+          <div class="rectangle"></div>
+          <div class="rectangle"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
