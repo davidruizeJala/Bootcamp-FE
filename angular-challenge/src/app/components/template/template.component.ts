@@ -10,6 +10,6 @@ export class TemplateComponent {
   protected readonly isOpen = signal(true);
 
   protected toggleMenu(): void {
-    this.isOpen.set(!this.isOpen());
+    this.isOpen.update(value => !value);
   }
 }
