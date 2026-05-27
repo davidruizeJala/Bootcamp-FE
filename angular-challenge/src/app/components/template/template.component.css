@@ -69,3 +69,9 @@ body {
     background-color: #ED028C;
     border: 2px solid #02FFC5;
 }
+
+@media (max-width: 768px) {
+    .layout {
+        grid-template-columns: 3.2rem 1fr;
+    }
+}
