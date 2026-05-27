@@ -8,8 +8,9 @@ import { Component, signal } from '@angular/core';
 })
 export class TemplateComponent {
   protected readonly isOpen = signal(true);
+  protected readonly isAdmin = signal(true);
 
   protected toggleMenu(): void {
-    this.isOpen.update(value => !value);
+    this.isOpen.update((isOpen) => !isOpen);
   }
 }

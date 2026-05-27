@@ -1,10 +1,14 @@
 <div class="layout" [class.sidebar-collapsed]="!isOpen()">
-  <div class="top"></div>
+  <div class="top">
+    <button (click)="this.isAdmin.update((isAdmin) => !isAdmin)">Admin permissions</button>
+  </div>
   <div class="side">
-    <button (click)="toggleMenu()" class="button">menu</button>
+    @if (isAdmin()) {
+      <button (click)="toggleMenu()" class="button">menu</button>
+    }
+    <div class="rectangle-large-1"></div>
   </div>
   <div class="third-container">
-    <div class="rectangle-large-1"></div>
     <div class="rectangle-large-2"></div>
     <div class="main">
       <div class="rectangle"></div>
