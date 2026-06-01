@@ -5,6 +5,7 @@
   <button (click)="showRecipe2()">Show recipe 2</button>
 
   <h2>{{ recipe().name }}</h2>
+  <img [src]="recipe().imgUrl" alt="Recipe img" width="400" height="300" />
   <p>{{ recipe().description }}</p>
 
   <h3>Servings: {{ servings() }}</h3>
