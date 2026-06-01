@@ -10,4 +10,5 @@ export interface RecipeModel {
   description: string;
   ingredients: Ingredient[];
   imgUrl: string;
+  isFavorite: boolean;
 }

@@ -13,6 +13,7 @@ export const MOCK_RECIPE_1: RecipeModel = {
   ],
   imgUrl:
     'https://pastaslamuneca.com/wp-content/uploads/2021/04/Pasta-carbonara-receta-italiana-original-768x512.png',
+  isFavorite: true,
 };
 
 export const MOCK_RECIPE_2: RecipeModel = {
@@ -27,4 +28,5 @@ export const MOCK_RECIPE_2: RecipeModel = {
   ],
   imgUrl:
     'https://www.huleymantel.com/uploads/s1/36/17/27/ensalada-caprese-tomates-maduros-queso-mozzarella-hojas-albahaca-fresca-166116-3714.jpeg',
+  isFavorite: false,
 };
