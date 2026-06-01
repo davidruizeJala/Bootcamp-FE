@@ -1,0 +1,26 @@
+.card {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  gap: 0.5rem;
+  align-items: center;
+  border: 2px solid rgb(104, 104, 104);
+  border-radius: 10px;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.ingredients {
+  justify-content: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
