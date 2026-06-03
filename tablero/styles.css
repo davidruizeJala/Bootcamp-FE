@@ -24,8 +24,8 @@ body {
 .container {
     display: grid;
     grid-template-areas:
-        "outsideleft-t insideleft-t main-t insideright-t outsiderigh-t"
-        "outsideleft-b insideleft-b main-b insideright-b outsideright-b";
+        "outsideleft-t insideleft-t main-t insideright-t ."
+        ". insideleft-b main-b insideright-b outsideright-b";
     grid-template-columns: 1fr 1fr 30rem 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     row-gap: 1rem;
