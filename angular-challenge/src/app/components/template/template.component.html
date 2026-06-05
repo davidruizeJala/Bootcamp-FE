@@ -11,9 +11,49 @@
   <div class="third-container">
     <div class="rectangle-large-2"></div>
     <div class="main">
-      <div class="rectangle"></div>
-      <div class="rectangle"></div>
-      <div class="rectangle"></div>
+      <div class="rectangle">
+        <button class="ctrl-btn" (click)="notificationCount.update((n) => (n > 0 ? n - 1 : 0))">
+          −
+        </button>
+        <span class="ctrl-value">{{ notificationCount() }}</span>
+        <button class="ctrl-btn" (click)="notificationCount.update((n) => n + 1)">+</button>
+        <p>{{ notificationCount() | i18nPlural: notificationPluralMap }}</p>
+        <hr />
+
+        <select
+          [value]="notificationPriority()"
+          (change)="notificationPriority.set($any($event.target).value)"
+        >
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        <p>{{ notificationPriority() | i18nSelect: prioritySelectMap }}</p>
+      </div>
+      <div class="rectangle">
+        <button class="ctrl-btn" (click)="itemCount.update((n) => (n > 0 ? n - 1 : 0))">−</button>
+        <span class="ctrl-value">{{ itemCount() }}</span>
+        <button class="ctrl-btn" (click)="itemCount.update((n) => n + 1)">+</button>
+        <p>{{ itemCount() | i18nPlural: itemPluralMap }}</p>
+        <hr />
+
+        <select [value]="shippingStatus()" (change)="shippingStatus.set($any($event.target).value)">
+          <option value="pending">pending</option>
+          <option value="shipped">shipped</option>
+          <option value="delivered">delivered</option>
+        </select>
+        <p>{{ shippingStatus() | i18nSelect: statusSelectMap }}</p>
+      </div>
+
+      <div class="rectangle">
+        <button class="ctrl-btn" (click)="timeTracking.update((n) => (n > 0 ? n - 1 : 0))">
+          −
+        </button>
+        <span class="ctrl-value">{{ timeTracking() }}</span>
+        <button class="ctrl-btn" (click)="timeTracking.update((n) => n + 1)">+</button>
+        <p>{{ timeTracking() | i18nPlural: timePluralMap }}</p>
+        <hr />
+      </div>
       <div class="rectangle"></div>
     </div>
   </div>
