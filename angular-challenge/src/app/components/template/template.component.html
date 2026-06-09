@@ -12,9 +12,7 @@
     <div class="rectangle-large-2"></div>
     <div class="main">
       <div class="rectangle">
-        <button class="ctrl-btn" (click)="notificationCount.update((n) => (n > 0 ? n - 1 : 0))">
-          −
-        </button>
+        <button class="ctrl-btn" (click)="notificationCount.update((n) => n - 1)">−</button>
         <span class="ctrl-value">{{ notificationCount() }}</span>
         <button class="ctrl-btn" (click)="notificationCount.update((n) => n + 1)">+</button>
         <p>{{ notificationCount() | i18nPlural: notificationPluralMap }}</p>
@@ -54,7 +52,11 @@
         <p>{{ timeTracking() | i18nPlural: timePluralMap }}</p>
         <hr />
       </div>
-      <div class="rectangle"></div>
+      <div class="rectangle">
+        <h1>My own pipe :)</h1>
+        <p>{{ reverseWord() | reverse }}</p>
+        <p>{{ timeNow() | timeAgo }}</p>
+      </div>
     </div>
   </div>
 </div>

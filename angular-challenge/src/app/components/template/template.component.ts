@@ -1,10 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { I18nPluralPipe, I18nSelectPipe } from '@angular/common';
+import { ReversePipe } from '../../pipes/reverse.pipe';
+import { timeAgoPipe } from '../../pipes/timeAgo.pipe';
 
 @Component({
   selector: 'app-template',
   standalone: true,
-  imports: [I18nPluralPipe, I18nSelectPipe],
+  imports: [I18nPluralPipe, I18nSelectPipe, ReversePipe, timeAgoPipe],
   templateUrl: './template.component.html',
   styleUrl: './template.component.css',
 })
@@ -17,10 +19,13 @@ export class TemplateComponent {
   protected readonly timeTracking = signal(0);
   protected readonly notificationPriority = signal('high');
   protected readonly shippingStatus = signal('pending');
+  protected readonly reverseWord = signal('Hello World');
+  //date(year, month, day, hour, minute, second, ms)
+  protected readonly timeNow = signal(new Date('2024-01-02T12:00:00'));
 
   protected readonly notificationPluralMap: { [k: string]: string } = {
-    '=0': 'No new notifications',
-    '=1': 'You have 1 new notification',
+    '=0': 'No notifications',
+    '=-1': 'You have 1 new notification',
     other: 'You have # new notifications',
   };
 
