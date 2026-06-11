@@ -1,0 +1,18 @@
+<div style="max-width: 500px; margin: 20px auto; font-family: sans-serif;">
+      <h2>Parent Preview</h2>
+      
+      <div style="margin-bottom: 15px;">
+        <button (click)="fontSize = 14">S (14px)</button>
+        <button (click)="fontSize = 24">M (24px)</button>
+        <button (click)="fontSize = 42">L (42px)</button>
+      </div>
+
+      <app-fon [(size)]="fontSize"></app-font-size-slider>
+
+      <p [style.fontSize.px]="fontSize" >
+        Hello, Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
+        Id cumque perspiciatis impedit dolores fugit explicabo quisquam 
+        eius saepe sint provident rerum molestiae, magni exercitationem 
+        aspernatur, assumenda dicta facere maiores minima!
+      </p>
+    </div>
