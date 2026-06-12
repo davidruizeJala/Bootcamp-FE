@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { Child } from '../child/child';
 
 @Component({
   selector: 'app-father',
-  imports: [],
+  imports: [Child],
   templateUrl: './father.html',
   styleUrl: './father.css',
 })
-export class Father {}
+export class Father {
+  activated = signal(false);
+}

@@ -1,0 +1,4 @@
+<div class="switch" [class.on]="isOn()" (click)="isOn.set(!isOn())">
+  <div class="thumb"></div>
+</div>
+<span>{{ isOn() ? 'ON' : 'OFF' }}</span>

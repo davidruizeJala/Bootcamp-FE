@@ -1,1 +1,7 @@
-<p>father works!</p>
+<div class="preview">
+  <app-child [(isOn)]="activated" />
+  <p>El padre ve: {{ activated() }}</p>
+  <div>
+    <button (click)="activated.set(false)">Resetear</button>
+  </div>
+</div>

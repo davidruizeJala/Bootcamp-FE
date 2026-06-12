@@ -1,11 +1,11 @@
 import { Component, model } from '@angular/core';
 
 @Component({
-  selector: 'app-son',
+  selector: 'app-child',
   imports: [],
-  templateUrl: './son.html',
-  styleUrl: './son.css',
+  templateUrl: './child.html',
+  styleUrl: './child.css',
 })
-export class Son {
+export class Child {
   isOn = model<boolean>(false);
 }
