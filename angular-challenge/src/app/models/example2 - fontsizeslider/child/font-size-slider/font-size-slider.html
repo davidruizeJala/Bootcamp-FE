@@ -1,5 +1,7 @@
 <div class="card">
   <label>FontSize : </label>
-  <input type="range" min="12" max="48" [(ngModel)]="size" />
+  <input type="range" min="12" max="48"  [value]="size()" (input)="size.set($any($event.target).value)" />
+  <!--<input type="range" min="12" max="48" [(ngModel)]="size" />-->
+
   <span>{{ size() }}px</span>
 </div>
