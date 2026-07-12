@@ -1,0 +1,42 @@
+/**
+ * Tipos que describen la forma de los datos que devuelve la API de YGOPRODeck.
+ * Solo se modelan los campos que la aplicación realmente usa.
+ * Doc: https://ygoprodeck.com/api-guide/
+ */
+
+export interface CardImage {
+  id: number;
+  image_url: string;
+  image_url_small: string;
+}
+
+export interface CardPrice {
+  cardmarket_price: string;
+  tcgplayer_price: string;
+  ebay_price: string;
+  amazon_price: string;
+  coolstuffinc_price: string;
+}
+
+export interface Card {
+  id: number;
+  name: string;
+  type: string;
+  /** Descripción legible del tipo, ej. "Xyz Effect Monster". */
+  humanReadableCardType?: string;
+  /** Texto de efecto / descripción de la carta. */
+  desc: string;
+  race: string;
+  /** Solo presente en cartas de tipo monstruo. */
+  atk?: number;
+  def?: number;
+  level?: number;
+  attribute?: string;
+  card_images: CardImage[];
+  card_prices?: CardPrice[];
+}
+
+/** Respuesta exitosa de cardinfo.php. */
+export interface CardApiResponse {
+  data: Card[];
+}
