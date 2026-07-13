@@ -7,10 +7,7 @@
   </header>
 
   <div class="mb-6">
-    <app-search-bar
-      [initialTerm]="store.term()"
-      (search)="onSearch($event)"
-    />
+    <app-search-bar [term]="store.term()" (termChange)="onSearch($event)" />
   </div>
 
   @switch (store.status()) {
@@ -57,9 +54,7 @@
           }
         </div>
       } @else {
-        <div
-          class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
-        >
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           @for (card of store.cards(); track card.id) {
             <app-card-thumb [card]="card" (select)="onSelect($event)" />
           } @empty {

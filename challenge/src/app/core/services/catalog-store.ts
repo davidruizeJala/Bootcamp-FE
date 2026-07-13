@@ -1,4 +1,4 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Service, computed, inject, signal } from '@angular/core';
 
 import { Card } from '../models/card.model';
 import { CardApiService } from './card-api.service';
@@ -22,7 +22,7 @@ export type LoadStatus = 'idle' | 'loading' | 'success' | 'error';
  * suscripciones manuales que liberar. Las únicas suscripciones son a los
  * observables de HttpClient, que emiten una vez y completan solos.
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class CatalogStore {
   private readonly api = inject(CardApiService);
 

@@ -1,4 +1,4 @@
-import { Component, contentChildren, effect, signal } from '@angular/core';
+import { Component, computed, contentChildren, signal } from '@angular/core';
 
 import { TabPanel } from './tab-panel';
 
@@ -20,17 +20,16 @@ export class Tabs {
   readonly panels = contentChildren(TabPanel);
   readonly activeIndex = signal(0);
 
-  constructor() {
-    // Mantiene sincronizado qué panel está visible con la pestaña activa,
-    // y reajusta el índice si cambia la cantidad de paneles.
-    effect(() => {
-      const panels = this.panels();
-      if (!panels.length) return;
-
-      const active = Math.min(this.activeIndex(), panels.length - 1);
-      panels.forEach((panel, i) => panel.active.set(i === active));
-    });
-  }
+  /**
+   * Panel activo como estado derivado (no un efecto que empuje estado a los
+   * hijos): cada TabPanel se compara con este valor para saber si mostrarse.
+   * Recorta el índice si cambia la cantidad de paneles.
+   */
+  readonly activePanel = computed((): TabPanel | null => {
+    const panels = this.panels();
+    if (!panels.length) return null;
+    return panels[Math.min(this.activeIndex(), panels.length - 1)];
+  });
 
   select(index: number): void {
     this.activeIndex.set(index);

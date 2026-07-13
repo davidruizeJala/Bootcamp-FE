@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map, of, throwError } from 'rxjs';
 
@@ -9,7 +9,7 @@ import { Card, CardApiResponse } from '../models/card.model';
  * YGOPRODeck. Los componentes nunca llaman a HttpClient directamente: piden
  * los datos a través de este servicio (y del store que lo consume).
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class CardApiService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = 'https://db.ygoprodeck.com/api/v7/cardinfo.php';

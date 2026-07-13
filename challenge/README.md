@@ -71,20 +71,28 @@ grilla. Si no hay coincidencias se informa explícitamente.
 
 **Cómo.**
 - Búsqueda difusa con el parámetro `fname`.
-- El input usa **two-way binding** `[(ngModel)]` y emite el término con un
-  pequeño *debounce* (búsqueda en vivo) y también al presionar Enter.
-- El **autofoco** se resuelve con el hook `AfterViewInit` + `viewChild`, no con
-  el atributo `autofocus`.
+- El input usa un **`model()`** (señal de two-way binding) en lugar de
+  `[(ngModel)]`: el padre enlaza `[term]` para sembrar el valor guardado y
+  escucha `(termChange)` para recibir el término. Así **no se depende de
+  `FormsModule`**.
+- La búsqueda se dispara **al enviar el formulario** (Enter o botón "Buscar"): el
+  input se escribe de forma nativa y el valor se confirma en `submit()`, leyéndolo
+  del elemento con `viewChild.required`.
+- El **autofoco** se resuelve con el hook `AfterViewInit` + `viewChild.required`,
+  no con el atributo `autofocus`.
 - "Sin resultados" se deriva con una señal `isEmpty` y se distingue del estado
   de error.
 
-**Por qué es buen enfoque.** El *debounce* evita disparar una petición por cada
-tecla, reduciendo carga sobre la API y parpadeos en la UI. El autofoco vía
-`AfterViewInit` es un uso del ciclo de vida **con criterio**: el foco solo puede
-pedirse cuando el elemento nativo ya existe en el DOM, que es justo lo que
-garantiza ese hook (más confiable que `autofocus`, que no siempre se respeta al
-navegar dentro de una SPA). Tratar "sin resultados" como un estado normal —y no
-como un error— comunica mejor lo que pasó.
+**Por qué es buen enfoque.** Un único `model()` reemplaza al par `input` +
+`output` y a la señal local, dejando **una sola fuente de verdad** para el
+término y eliminando una dependencia (`FormsModule`). Buscar **al enviar** hace
+la acción explícita y evita disparar una petición por cada tecla sin necesidad de
+lógica de *debounce*. El autofoco vía `AfterViewInit` es un uso del ciclo de vida
+**con criterio**: el foco solo puede pedirse cuando el elemento nativo ya existe
+en el DOM, que es justo lo que garantiza ese hook (más confiable que `autofocus`,
+que no siempre se respeta al navegar dentro de una SPA), y `viewChild.required`
+declara que ese elemento siempre existe. Tratar "sin resultados" como un estado
+normal —y no como un error— comunica mejor lo que pasó.
 
 ### HU-03 — Ver el detalle de una carta
 
@@ -119,7 +127,11 @@ pestañas.
 - Un componente genérico `app-tabs` + `app-tab-panel` construido con
   **proyección de contenido**.
 - `app-tabs` lee sus paneles con `contentChildren(TabPanel)`, arma la fila de
-  pestañas a partir del `title` de cada panel y muestra solo el panel activo.
+  pestañas a partir del `title` de cada panel y expone el panel activo como
+  **estado derivado** (`activePanel = computed(...)`).
+- Cada `TabPanel` deriva su propio `active` inyectando el contenedor
+  (`inject(Tabs)`) y comparándose con `activePanel()`; nadie le "empuja" el
+  estado desde afuera.
 - Ni `Tabs` ni `TabPanel` mencionan cartas, precios ni nada del dominio.
 
 **Por qué es buen enfoque.** El requisito pide un componente **reutilizable que
@@ -128,7 +140,11 @@ contenido logra exactamente eso: el contenedor solo sabe de "secciones con
 título", y el `card-detail` decide qué va adentro. Así las mismas pestañas
 sirven para cualquier pantalla futura (un mazo, un perfil, etc.) sin tocar su
 código. Además demuestra el acceso a contenido proyectado (`contentChildren`)
-que pide la rúbrica.
+que pide la rúbrica. Modelar la visibilidad como **estado derivado con
+`computed`** —en vez de un `effect()` que escriba señales en los hijos— sigue la
+guía de Angular (preferir `computed` para estado derivado y reservar `effect`
+para efectos secundarios reales): el flujo es en una sola dirección y sin
+escrituras imperativas.
 
 ### HU-05 — Mantener el estado de búsqueda consistente
 
@@ -137,8 +153,8 @@ seleccionada se manejan de forma centralizada, no con variables sueltas
 repartidas por los componentes.
 
 **Cómo.**
-- Un único store `CatalogStore` (`providedIn: 'root'`) con **Signals** como
-  única herramienta de estado.
+- Un único store `CatalogStore` (`@Service()`, singleton de raíz) con **Signals**
+  como única herramienta de estado.
 - Los componentes leen señales de solo lectura (`term`, `cards`, `status`,
   `selected`, `isEmpty`…) y llaman a métodos del store (`search`, `select`,
   `loadCardById`).
@@ -168,13 +184,50 @@ conjunto (las decisiones específicas de cada historia están arriba):
 - **Una capa de datos** (`CardApiService`) como único punto que usa `HttpClient`:
   la UI nunca llama a la API directamente. Si mañana cambia el endpoint o se
   agrega caché, se toca un solo archivo.
+- **Servicios con `@Service()`**, el decorador introducido en Angular 22 para
+  clases de servicio (auto-provistas en la raíz por defecto), en lugar de
+  `@Injectable({ providedIn: 'root' })`. Mismo comportamiento, menos ceremonia.
 - **Manejo de errores en el lugar correcto**: el servicio distingue un `400` "sin
   coincidencias" (→ lista vacía) de un fallo real de red (→ estado de error), de
   modo que la UI muestra el mensaje adecuado en cada caso.
 - **Nuevo control de flujo** (`@if`, `@for`, `@empty`, `@switch`) en todas las
   plantillas, en lugar de las directivas `*ngIf` / `*ngFor`.
 - **Angular 22** con las APIs basadas en señales (`input()`, `output()`,
-  `viewChild()`, `contentChildren()`), el estándar actual del framework.
+  `model()`, `viewChild()`, `contentChildren()`, `computed()`), el estándar
+  actual del framework.
+
+## Mejoras e iteración sobre la primera versión
+
+Tras la entrega inicial se revisó el código buscando el idioma más actual de
+Angular 22 y menos acoplamiento. Los cambios (antes → después):
+
+### Búsqueda (HU-02): de `[(ngModel)]` a `model()`
+
+- **Antes:** el input usaba `[(ngModel)]` (con `FormsModule`) y emitía el término
+  en vivo con *debounce* mediante un `output` aparte, más una señal local para el
+  texto.
+- **Después:** un único **`model()`** de two-way binding sustituye al par
+  `input` + `output` y a la señal local. Se elimina la dependencia de
+  `FormsModule` y la búsqueda pasa a confirmarse **al enviar** (Enter/botón),
+  leyendo el valor con `viewChild.required`. Menos piezas y una sola fuente de
+  verdad para el término.
+
+### Pestañas (HU-04): de `effect()` a estado derivado
+
+- **Antes:** un `effect()` en `Tabs` **empujaba** el estado `active` a cada panel
+  (propagación de estado dentro de un efecto, un patrón que la documentación de
+  Angular desaconseja).
+- **Después:** `Tabs` expone `activePanel` como **`computed`** y cada `TabPanel`
+  **deriva** su propio `active` inyectando el contenedor (`inject(Tabs)`). Estado
+  derivado puro, sin escrituras imperativas ni `effect()`.
+
+### Servicios: de `@Injectable` a `@Service()`
+
+- **Antes:** `@Injectable({ providedIn: 'root' })` en `CardApiService` y
+  `CatalogStore`.
+- **Después:** **`@Service()`**, el decorador nuevo de Angular 22 para servicios
+  (auto-provistos en la raíz por defecto). Comportamiento idéntico, menos
+  ceremonia; es además lo que genera hoy `ng generate service`.
 
 ## Estructura
 
