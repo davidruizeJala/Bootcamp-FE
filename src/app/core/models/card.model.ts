@@ -36,7 +36,21 @@ export interface Card {
   card_prices?: CardPrice[];
 }
 
+/**
+ * Metadatos de paginación que la API incluye cuando se piden `num`/`offset`.
+ * Solo se usa `total_rows` (para calcular cuántas páginas hay en total).
+ */
+export interface CardApiMeta {
+  current_rows: number;
+  total_rows: number;
+  rows_remaining: number;
+  total_pages: number;
+  pages_remaining: number;
+  next_page_offset: number;
+}
+
 /** Respuesta exitosa de cardinfo.php. */
 export interface CardApiResponse {
   data: Card[];
+  meta?: CardApiMeta;
 }

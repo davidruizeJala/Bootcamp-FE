@@ -1,7 +1,7 @@
 import { Service, computed, inject, signal } from '@angular/core';
 
 import { Card } from '../models/card.model';
-import { CardApiService } from './card-api.service';
+import { CardApiService, PAGE_SIZE } from './card-api.service';
 
 /** Estado posible de una carga de datos (catálogo o detalle). */
 export type LoadStatus = 'idle' | 'loading' | 'success' | 'error';
@@ -9,13 +9,12 @@ export type LoadStatus = 'idle' | 'loading' | 'success' | 'error';
 /**
  * Store central de la funcionalidad de búsqueda/catálogo (HU-05).
  *
- * Toda la información viva —término buscado, resultados, estado de carga,
- * error y carta seleccionada— se representa con Signals en un único lugar.
- * Los componentes leen estas señales y llaman a los métodos del store; no
- * mantienen su propio estado de carga ni resultados sueltos. Al ser un
- * singleton (`providedIn: 'root'`), el estado sobrevive a la navegación entre
- * el catálogo y el detalle, por lo que volver del detalle conserva el contexto
- * de la búsqueda anterior (HU-03).
+ * Toda la información viva —término buscado, resultados, página actual, estado
+ * de carga, error y carta seleccionada— se representa con Signals en un único
+ * lugar. Los componentes leen estas señales y llaman a los métodos del store; no
+ * mantienen su propio estado. Al ser un singleton (`@Service()`), el estado
+ * sobrevive a la navegación entre el catálogo y el detalle, por lo que volver
+ * del detalle conserva el contexto —incluida la página— de la búsqueda (HU-03).
  *
  * Se eligió Signals (y no BehaviorSubject) porque el estado es local de la UI
  * y se lee de forma síncrona en las plantillas sin async pipe ni
@@ -32,6 +31,10 @@ export class CatalogStore {
   private readonly _status = signal<LoadStatus>('idle');
   private readonly _error = signal<string | null>(null);
 
+  // --- Paginación (HU-01/02): la API pagina del lado del servidor ---
+  private readonly _page = signal(1);
+  private readonly _total = signal(0);
+
   // --- Estado del detalle (HU-03) ---
   private readonly _selected = signal<Card | null>(null);
   private readonly _detailStatus = signal<LoadStatus>('idle');
@@ -41,6 +44,8 @@ export class CatalogStore {
   readonly cards = this._cards.asReadonly();
   readonly status = this._status.asReadonly();
   readonly error = this._error.asReadonly();
+  readonly page = this._page.asReadonly();
+  readonly total = this._total.asReadonly();
   readonly selected = this._selected.asReadonly();
   readonly detailStatus = this._detailStatus.asReadonly();
 
@@ -51,31 +56,37 @@ export class CatalogStore {
   readonly isEmpty = computed(
     () => this._status() === 'success' && this._cards().length === 0,
   );
+  /** Cantidad total de páginas para la consulta actual (mínimo 1). */
+  readonly totalPages = computed(() => Math.max(1, Math.ceil(this._total() / PAGE_SIZE)));
 
-  /** Conjunto inicial de cartas al abrir la app (HU-01). */
+  /** Conjunto inicial de cartas al abrir la app (HU-01), primera página. */
   loadInitial(): void {
     this._term.set('');
-    this.runCatalog(this.api.getInitialCatalog());
+    this._page.set(1);
+    this.fetchPage();
   }
 
   /**
-   * Busca por nombre (HU-02). Si el término queda vacío, se vuelve al catálogo
-   * inicial en lugar de dejar la grilla vacía sin contexto.
+   * Busca por nombre (HU-02) y reinicia a la página 1. Si el término queda
+   * vacío, `fetchPage` vuelve al catálogo en lugar de dejar la grilla vacía.
    */
   search(term: string): void {
-    const trimmed = term.trim();
     this._term.set(term);
-    if (!trimmed) {
-      this.loadInitial();
-      return;
-    }
-    this.runCatalog(this.api.searchByName(trimmed));
+    this._page.set(1);
+    this.fetchPage();
   }
 
-  /** Reintenta la última operación (usado por el botón de error). */
+  /** Va a una página concreta (botones del paginador). Recorta al rango válido. */
+  goToPage(page: number): void {
+    const target = Math.min(Math.max(1, page), this.totalPages());
+    if (target === this._page() && this._status() === 'success') return;
+    this._page.set(target);
+    this.fetchPage();
+  }
+
+  /** Reintenta la operación actual (usado por el botón de error). */
   retry(): void {
-    const trimmed = this._term().trim();
-    trimmed ? this.search(trimmed) : this.loadInitial();
+    this.fetchPage();
   }
 
   /** Guarda la carta elegida desde la grilla para mostrarla al instante. */
@@ -107,17 +118,29 @@ export class CatalogStore {
     });
   }
 
-  /** Lógica compartida por loadInitial() y search(): carga una lista de cartas. */
-  private runCatalog(source: ReturnType<CardApiService['getInitialCatalog']>): void {
+  /**
+   * Pide la página actual: usa la búsqueda por nombre si hay término, o el
+   * catálogo si está vacío. Centraliza estado de carga, error, resultados y
+   * total (para el paginador). Lo comparten loadInitial, search y goToPage.
+   */
+  private fetchPage(): void {
+    const term = this._term().trim();
+    const offset = (this._page() - 1) * PAGE_SIZE;
+    const source = term
+      ? this.api.searchByName(term, offset)
+      : this.api.getCatalogPage(offset);
+
     this._status.set('loading');
     this._error.set(null);
     source.subscribe({
-      next: (cards) => {
+      next: ({ cards, total }) => {
         this._cards.set(cards);
+        this._total.set(total);
         this._status.set('success');
       },
       error: () => {
         this._cards.set([]);
+        this._total.set(0);
         this._error.set('No pudimos conectar con el catálogo. Intenta de nuevo.');
         this._status.set('error');
       },

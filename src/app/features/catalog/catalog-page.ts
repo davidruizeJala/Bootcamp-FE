@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Card } from '../../core/models/card.model';
 import { CatalogStore } from '../../core/services/catalog-store';
 import { CardThumb } from '../../shared/card-thumb/card-thumb';
+import { Pagination } from '../../shared/pagination/pagination';
 import { SearchBar } from '../../shared/search-bar/search-bar';
 
 /**
@@ -14,7 +15,7 @@ import { SearchBar } from '../../shared/search-bar/search-bar';
  */
 @Component({
   selector: 'app-catalog-page',
-  imports: [SearchBar, CardThumb],
+  imports: [SearchBar, CardThumb, Pagination],
   templateUrl: './catalog-page.html',
 })
 export class CatalogPage implements OnInit {
@@ -31,6 +32,12 @@ export class CatalogPage implements OnInit {
 
   onSearch(term: string): void {
     this.store.search(term);
+  }
+
+  onPageChange(page: number): void {
+    this.store.goToPage(page);
+    // Al cambiar de página, volver arriba para ver la nueva grilla desde el inicio.
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   onSelect(card: Card): void {

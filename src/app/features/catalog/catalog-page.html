@@ -63,6 +63,12 @@
             </p>
           }
         </div>
+
+        <app-pagination
+          [page]="store.page()"
+          [totalPages]="store.totalPages()"
+          (pageChange)="onPageChange($event)"
+        />
       }
     }
   }
