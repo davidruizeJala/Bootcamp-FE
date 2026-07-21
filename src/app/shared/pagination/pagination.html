@@ -1,0 +1,45 @@
+@if (totalPages() > 1) {
+  <nav
+    class="mt-8 flex flex-wrap items-center justify-center gap-1"
+    aria-label="Paginación del catálogo"
+  >
+    <button
+      type="button"
+      (click)="go(page() - 1)"
+      [disabled]="page() === 1"
+      class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      ‹ Anterior
+    </button>
+
+    @for (item of items(); track $index) {
+      @if (item.kind === 'gap') {
+        <span class="px-2 text-slate-400" aria-hidden="true">…</span>
+      } @else {
+        <button
+          type="button"
+          (click)="go(item.value)"
+          [attr.aria-current]="item.value === page() ? 'page' : null"
+          class="min-w-[2.5rem] rounded-lg border px-3 py-2 text-sm font-medium transition"
+          [class.border-indigo-600]="item.value === page()"
+          [class.bg-indigo-600]="item.value === page()"
+          [class.text-white]="item.value === page()"
+          [class.border-slate-300]="item.value !== page()"
+          [class.text-slate-600]="item.value !== page()"
+          [class.hover:bg-slate-100]="item.value !== page()"
+        >
+          {{ item.value }}
+        </button>
+      }
+    }
+
+    <button
+      type="button"
+      (click)="go(page() + 1)"
+      [disabled]="page() === totalPages()"
+      class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      Siguiente ›
+    </button>
+  </nav>
+}

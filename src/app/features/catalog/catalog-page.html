@@ -1,0 +1,75 @@
+<section class="mx-auto max-w-6xl px-4 py-6">
+  <header class="mb-6">
+    <h1 class="text-2xl font-bold text-slate-900">Duelist Codex</h1>
+    <p class="text-sm text-slate-500">
+      Explora el catálogo de cartas de Yu-Gi-Oh! y mira su detalle.
+    </p>
+  </header>
+
+  <div class="mb-6">
+    <app-search-bar [term]="store.term()" (termChange)="onSearch($event)" />
+  </div>
+
+  @switch (store.status()) {
+    @case ('loading') {
+      <div
+        class="flex flex-col items-center justify-center gap-3 py-20 text-slate-500"
+        role="status"
+      >
+        <span
+          class="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-indigo-600"
+          aria-hidden="true"
+        ></span>
+        <p>Cargando cartas…</p>
+      </div>
+    }
+
+    @case ('error') {
+      <div
+        class="mx-auto max-w-md rounded-xl border border-red-200 bg-red-50 p-6 text-center"
+        role="alert"
+      >
+        <p class="mb-4 text-red-700">{{ store.error() }}</p>
+        <button
+          type="button"
+          (click)="store.retry()"
+          class="rounded-lg bg-red-600 px-4 py-2 font-medium text-white transition hover:bg-red-700"
+        >
+          Reintentar
+        </button>
+      </div>
+    }
+
+    @default {
+      @if (store.isEmpty()) {
+        <div class="py-20 text-center text-slate-500">
+          @if (store.term().trim()) {
+            <p class="text-lg">
+              No encontramos cartas para
+              <span class="font-semibold text-slate-700">"{{ store.term() }}"</span>.
+            </p>
+            <p class="text-sm">Prueba con otro nombre.</p>
+          } @else {
+            <p class="text-lg">No hay cartas para mostrar por ahora.</p>
+          }
+        </div>
+      } @else {
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          @for (card of store.cards(); track card.id) {
+            <app-card-thumb [card]="card" (select)="onSelect($event)" />
+          } @empty {
+            <p class="col-span-full py-20 text-center text-slate-500">
+              No hay cartas para mostrar.
+            </p>
+          }
+        </div>
+
+        <app-pagination
+          [page]="store.page()"
+          [totalPages]="store.totalPages()"
+          (pageChange)="onPageChange($event)"
+        />
+      }
+    }
+  }
+</section>
