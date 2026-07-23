@@ -1,8 +1,11 @@
-# Duelist Codex — Challenge 1
+# Duelist Codex — Challenge 2
 
-Explorador de cartas de **Yu-Gi-Oh!** construido con Angular. Esta primera
-entrega cubre dos capacidades: **explorar el catálogo** y **ver el detalle de
-una carta**, consumiendo la API pública de [YGOPRODeck](https://ygoprodeck.com/api-guide/).
+Explorador de cartas de **Yu-Gi-Oh!** construido con Angular, continuación
+directa del Challenge 1. Sobre el catálogo y el detalle ya existentes, esta
+entrega agrega **navegación real por rutas** (incluyendo rutas hijas y una
+sección protegida), un **resolver** para el detalle, una **directiva** y un
+**pipe** propios. Consume la API pública de
+[YGOPRODeck](https://ygoprodeck.com/api-guide/).
 
 ## Requisitos
 
@@ -29,14 +32,51 @@ npm test         # pruebas unitarias con Vitest
 
 Endpoint base: `https://db.ygoprodeck.com/api/v7/cardinfo.php`
 
-| Uso en la app        | Parámetros            | Ejemplo                         |
-| -------------------- | --------------------- | ------------------------------- |
-| Catálogo inicial     | `num`, `offset`       | `?num=40&offset=0`              |
-| Búsqueda por nombre  | `fname` (difusa)      | `?fname=Dragon`                 |
-| Detalle de una carta | `id`                  | `?id=6983839`                   |
+| Uso en la app        | Parámetros       | Ejemplo            |
+| -------------------- | ---------------- | ------------------ |
+| Catálogo inicial     | `num`, `offset`  | `?num=40&offset=0` |
+| Búsqueda por nombre  | `fname` (difusa) | `?fname=Dragon`    |
+| Detalle de una carta | `id`             | `?id=6983839`      |
 
 Cuando `fname` no encuentra coincidencias, la API responde con un `400`; la app
 lo interpreta como "sin resultados" (no como un error a mostrar).
+
+## Mapa de rutas (Challenge 2)
+
+| Ruta                     | Componente       | Notas                                              |
+| ------------------------ | ---------------- | -------------------------------------------------- |
+| `/`                      | `CatalogPage`    | Catálogo + búsqueda (HU-01/02)                     |
+| `/card/:id`              | `CardDetailPage` | Detalle; `resolve: { card: cardResolver }` (HU-04) |
+| `/card/:id/efecto`       | `EffectSection`  | Ruta hija — efecto de la carta (HU-02)             |
+| `/card/:id/estadisticas` | `StatsSection`   | Ruta hija — ATK/DEF/tipo/atributo (HU-02)          |
+| `/card/:id/precio`       | `PriceSection`   | Ruta hija — precios de referencia (HU-02)          |
+| `/coleccion`             | `CollectionPage` | `canActivate: [aliasGuard]` — favoritos (HU-03/05) |
+| `/perfil`                | `ProfilePage`    | Configurar el alias de duelista (HU-03)            |
+| `**`                     | → `/`            | Comodín                                            |
+
+`/card/:id` redirige a `efecto` por defecto. Entrar directo a una sub-ruta
+(p. ej. `/card/6983839/precio`) funciona sin pasos intermedios.
+
+### Novedades de Challenge 2
+
+- **Child routing (HU-02):** las secciones del detalle (Efecto / Estadísticas /
+  Precio) son **rutas hijas** con un `<router-outlet>` anidado; cambiar de
+  sección actualiza la URL sin perder la carta. Reemplaza a las pestañas por
+  proyección de contenido del Challenge 1.
+- **Resolver (HU-04):** `cardResolver` obtiene la carta **antes** de activar la
+  vista. Si el `id` no existe o la petición falla, devuelve un `RedirectCommand`
+  al catálogo en lugar de mostrar una pantalla en blanco.
+- **Guard (HU-03):** `` aliasGuardprotege `/coleccion`. Si no hay un alias de
+  duelista configurado, redirige a `/perfil`; una vez configurado, el acceso es
+  directo durante la sesión. El estado (alias + favoritos) vive en `ProfileStore`
+  con Signals.
+- **Directiva de atributo (HU-05):** `[appHighlightAtk]` resalta las cartas cuyo
+  ATK supera un umbral configurable (`[threshold]`, por defecto 2500). Se aplica
+  igual en el catálogo y en la colección, sin duplicar lógica.
+- **Pipe propio:** `statValue` formatea ATK/DEF (separador de miles) y muestra
+  `—` cuando la carta no tiene ese valor (magias/trampas).
+- **Favoritos:** cada tarjeta tiene un botón ♥ que alterna la carta en la
+  colección personal.
 
 ## Historias de usuario: qué se hizo y por qué
 
@@ -50,6 +90,7 @@ tipo. Mientras carga hay un spinner; si no hay datos o falla la conexión se
 muestra un mensaje claro en vez de una pantalla en blanco.
 
 **Cómo.**
+
 - El catálogo inicial se pide con `?num=40&offset=0` en lugar de traer las ~13k
   cartas del endpoint sin parámetros.
 - La plantilla usa `@switch (store.status())` para dibujar exactamente uno de los
@@ -70,6 +111,7 @@ automáticamente al entrar, que consulta la API por nombre parcial y actualiza l
 grilla. Si no hay coincidencias se informa explícitamente.
 
 **Cómo.**
+
 - Búsqueda difusa con el parámetro `fname`.
 - El input usa un **`model()`** (señal de two-way binding) en lugar de
   `[(ngModel)]`: el padre enlaza `[term]` para sembrar el valor guardado y
@@ -87,7 +129,7 @@ grilla. Si no hay coincidencias se informa explícitamente.
 `output` y a la señal local, dejando **una sola fuente de verdad** para el
 término y eliminando una dependencia (`FormsModule`). Buscar **al enviar** hace
 la acción explícita y evita disparar una petición por cada tecla sin necesidad de
-lógica de *debounce*. El autofoco vía `AfterViewInit` es un uso del ciclo de vida
+lógica de _debounce_. El autofoco vía `AfterViewInit` es un uso del ciclo de vida
 **con criterio**: el foco solo puede pedirse cuando el elemento nativo ya existe
 en el DOM, que es justo lo que garantiza ese hook (más confiable que `autofocus`,
 que no siempre se respeta al navegar dentro de una SPA), y `viewChild.required`
@@ -101,6 +143,7 @@ información completa (efecto, ATK/DEF, tipo, atributo), con imagen y nombre
 visibles. Al volver, el catálogo conserva la búsqueda previa.
 
 **Cómo.**
+
 - Navegación con **Angular Router**: rutas `''` (catálogo) y `card/:id` (detalle).
 - El `id` de la ruta entra al componente como `input()` gracias a
   `withComponentInputBinding()`.
@@ -115,7 +158,7 @@ detalle, y aprovecha el `router-outlet` que ya venía en el proyecto. Como el
 estado de búsqueda es central y sobrevive a la navegación, **conservar el
 contexto es gratis**: no hace falta pasar datos entre pantallas ni recargar la
 búsqueda. Poder resolver el detalle por `id` hace que la vista funcione incluso
-con *deep link* o al refrescar (caso límite de robustez).
+con _deep link_ o al refrescar (caso límite de robustez).
 
 ### HU-04 — Organizar el detalle en secciones
 
@@ -124,6 +167,7 @@ Estadísticas, Precio) a las que se accede de forma independiente mediante
 pestañas.
 
 **Cómo.**
+
 - Un componente genérico `app-tabs` + `app-tab-panel` construido con
   **proyección de contenido**.
 - `app-tabs` lee sus paneles con `contentChildren(TabPanel)`, arma la fila de
@@ -153,6 +197,7 @@ seleccionada se manejan de forma centralizada, no con variables sueltas
 repartidas por los componentes.
 
 **Cómo.**
+
 - Un único store `CatalogStore` (`@Service()`, singleton de raíz) con **Signals**
   como única herramienta de estado.
 - Los componentes leen señales de solo lectura (`term`, `cards`, `status`,
@@ -183,6 +228,7 @@ y "Siguiente ›". Al elegir una página se cargan solo sus cartas y se sube al
 inicio de la grilla.
 
 **Cómo.**
+
 - **Paginación del lado del servidor**: la API de YGOPRODeck acepta `num`/`offset`
   y devuelve en `meta.total_rows` el total de la consulta. Se piden **40 cartas
   por página**; nunca se traen las ~14 000.
@@ -203,7 +249,7 @@ cuando el conjunto total no cabe cómodamente en memoria/UI. Guardar la página 
 el store —y no en la URL— reutiliza la "única fuente de verdad" de HU-05, así que
 **volver del detalle conserva también la página** sin trabajo extra. Un paginador
 numérico con ventana y elipsis es claro, accesible y predecible; se prefirió al
-*scroll infinito*, que además de más complejo choca con la restauración de scroll
+_scroll infinito_, que además de más complejo choca con la restauración de scroll
 al navegar dentro de la SPA.
 
 ## Decisiones técnicas transversales
@@ -238,7 +284,7 @@ Angular 22 y menos acoplamiento. Los cambios (antes → después):
 ### Búsqueda (HU-02): de `[(ngModel)]` a `model()`
 
 - **Antes:** el input usaba `[(ngModel)]` (con `FormsModule`) y emitía el término
-  en vivo con *debounce* mediante un `output` aparte, más una señal local para el
+  en vivo con _debounce_ mediante un `output` aparte, más una señal local para el
   texto.
 - **Después:** un único **`model()`** de two-way binding sustituye al par
   `input` + `output` y a la señal local. Se elimina la dependencia de
@@ -270,13 +316,20 @@ src/app/
   core/
     models/card.model.ts
     services/card-api.service.ts     # acceso a la API (HttpClient)
-    services/catalog-store.ts        # estado central con Signals
+    services/catalog-store.ts        # estado del catálogo con Signals
+    services/profile-store.ts        # alias + favoritos con Signals
+    resolvers/card.resolver.ts       # carga la carta antes del detalle (HU-04)
+    guards/alias.guard.ts            # protege /coleccion (HU-03)
   features/
     catalog/                         # pantalla principal (HU-01/02)
-    card-detail/                     # detalle con pestañas (HU-03/04)
+    card-detail/                     # detalle con rutas hijas (HU-02)
+      sections/                      # efecto / estadísticas / precio
+    collection/                      # Mi colección — favoritos (HU-03/05)
+    profile/                         # configurar alias (HU-03)
   shared/
     search-bar/                      # búsqueda + autofoco
-    card-thumb/                      # tarjeta de la grilla
-    tabs/                            # pestañas reutilizables (HU-04)
+    card-thumb/                      # tarjeta de la grilla + favorito
     pagination/                      # paginador numérico reutilizable (EXTRA)
+    directives/highlight-atk.directive.ts  # resalta cartas por ATK (HU-05)
+    pipes/stat-value.pipe.ts               # formatea ATK/DEF
 ```

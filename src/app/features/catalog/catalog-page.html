@@ -56,7 +56,13 @@
       } @else {
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           @for (card of store.cards(); track card.id) {
-            <app-card-thumb [card]="card" (select)="onSelect($event)" />
+            <app-card-thumb
+              [appHighlightAtk]="card"
+              [card]="card"
+              [favorite]="profile.isFavorite(card.id)"
+              (select)="onSelect($event)"
+              (toggleFavorite)="onToggleFavorite($event)"
+            />
           } @empty {
             <p class="col-span-full py-20 text-center text-slate-500">
               No hay cartas para mostrar.

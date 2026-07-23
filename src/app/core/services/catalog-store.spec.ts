@@ -72,25 +72,9 @@ describe('CatalogStore', () => {
     expect(store.cards().length).toBe(0);
   });
 
-  it('HU-03: selecting a card keeps it available for the detail without refetching', () => {
+  it('HU-03: selecting a card keeps it available for the detail', () => {
     const card = fakeCard(42, 'Dark Magician');
     store.select(card);
     expect(store.selected()).toEqual(card);
-
-    store.loadCardById(42);
-    // Already selected → no HTTP call, shown immediately.
-    http.expectNone((r) => r.params.get('id') === '42');
-    expect(store.detailStatus()).toBe('success');
-  });
-
-  it('HU-03: entering the detail by id (deep link) fetches the card', () => {
-    store.loadCardById(6983839);
-    expect(store.detailStatus()).toBe('loading');
-
-    const req = http.expectOne((r) => r.params.get('id') === '6983839');
-    req.flush({ data: [fakeCard(6983839, 'Tornado Dragon')] });
-
-    expect(store.detailStatus()).toBe('success');
-    expect(store.selected()?.name).toBe('Tornado Dragon');
   });
 });
